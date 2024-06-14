@@ -46,13 +46,13 @@ def create_movie(movie: Movie):
 
 @app.patch("/api/movies/{movie_id}", status_code=200)
 def update_movie(movie_id: int, movie: Movie):
-    mov = checkFilm(movie_id)
     try:
         c.execute("UPDATE movies SET title=?, year=?, director=?, length=?, rating=? WHERE id=?",
                 (movie.title, movie.year, movie.director, movie.length.isoformat(), movie.rating, movie_id))
         conn.commit()
     except:
         raise HTTPException(status_code=500, detail = 'Server Expection')
+    mov = checkFilm(movie_id)
     return {"movie": createMovie(mov)}
 
 @app.delete("/api/movies/{movie_id}", status_code=202)
